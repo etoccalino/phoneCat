@@ -25,14 +25,22 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div ng-controller="PhoneListCtrl">
-      <ul>
-        <li ng-repeat="phone in phones">
-          {{phone.name}}
-          <p>{{phone.snippet}}</p>
-        </li>
-      </ul>
+    <div class="container" ng-controller="PhoneListCtrl">
+      <div class="row">
+        <div class="col-sm-3">
+          Search: <input ng-model="query" />
+        </div>
+        <div class="col-sm-9">
+          <ul>
+            <li ng-repeat="phone in phones | filter:query">
+              {{phone.name}}
+              <p>{{phone.snippet}}</p>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
+
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>

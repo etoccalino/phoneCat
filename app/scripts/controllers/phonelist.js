@@ -10,4 +10,5 @@ angular.module('phoneCatApp')
       {name: 'MOTOROLA XOOM™',
        snippet: 'The Next, Next Generation tablet.'}
     ];
+    $scope.query = "";
   });
