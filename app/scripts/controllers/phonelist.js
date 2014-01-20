@@ -1,15 +1,10 @@
 'use strict';
 
 angular.module('phoneCatApp')
-  .controller('PhoneListCtrl', function ($scope) {
-    $scope.phones = [
-      {name: 'Nexus S',
-       snippet: 'Fast just got faster with Nexus S.'},
-      {name: 'Motorola XOOM™ with Wi-Fi',
-       snippet: 'The Next, Next Generation tablet.'},
-      {name: 'MOTOROLA XOOM™',
-       snippet: 'The Next, Next Generation tablet.'}
-    ];
+  .controller('PhoneListCtrl', ['$scope', '$http', function ($scope, $http) {
+    $http.get('data/phones.json').success(function (data) {
+      $scope.phones = data;
+    });
     $scope.query = '';
     $scope.orderProp = 'age';
-  });
+  }]);
