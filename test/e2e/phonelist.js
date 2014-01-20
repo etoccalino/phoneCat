@@ -3,8 +3,16 @@
 function PhoneListPage () {
   this.all = element.all(by.repeater('phone in phones'));
 
-  this.filter = function (query) {
-    element(by.model("query")).sendKeys(query);
+  this.first = function () {
+    return element(by.repeater('phone in phones').row(0));
+  }
+
+  this.orderBy = function (order) {
+    element(by.css('option[value="' + order + '"]')).click();
+  }
+
+  this.filterBy = function (query) {
+    element(by.input('query')).sendKeys(query);
   }
 }
 
@@ -22,7 +30,7 @@ describe('Phone catalog list', function() {
 
   it('allows to filter the Nexus', function () {
     var listPage = new PhoneListPage();
-    listPage.filter('nexus');
+    listPage.filterBy('nexus');
     listPage.all.then(function (phones) {
       expect(phones.length).toBe(1);
     });
@@ -30,9 +38,28 @@ describe('Phone catalog list', function() {
 
   it('allows to filter the Motorola', function () {
     var listPage = new PhoneListPage();
-    listPage.filter('motorola');
+    listPage.filterBy('motorola');
     listPage.all.then(function (phones) {
       expect(phones.length).toBe(2);
     });
+  });
+
+  it('ensures order does not kill results', function () {
+    var listPage = new PhoneListPage();
+    listPage.all.then(function (phones) {
+      var len = phones.length;
+      listPage.orderBy('name');
+      listPage.all.then(function (phones) {
+        expect(phones.length).toBe(len);
+      });
+    });
+  });
+
+  it('orders alphabetically, moving the Nexus S to the bottom', function () {
+    var listPage = new PhoneListPage();
+    var firstName = listPage.first().getText();
+    expect(firstName).toMatch(/Nexus S.*/);
+    listPage.orderBy('name');
+    expect(listPage.first().getText()).not.toMatch(/Nexus S.*/);
   });
 });

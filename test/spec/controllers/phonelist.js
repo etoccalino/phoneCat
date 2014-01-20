@@ -19,4 +19,8 @@ describe('Controller: PhoneListCtrl', function () {
   it('should attach a list of phones', function () {
     expect(scope.phones.length).toBe(3);
   });
+
+  it('should have "age" as default order property', function () {
+    expect(scope.orderProp).toBe('age');
+  });
 });
